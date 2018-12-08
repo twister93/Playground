@@ -1,11 +1,7 @@
-from flask import Flask, render_template, url_for, flash, json, request, session, redirect
-from flask_wtf import FlaskForm #form
-from wtforms import StringField, SubmitField,PasswordField,ValidationError #field user
-from wtforms.validators import Length,Email,EqualTo,DataRequired,regexp #validators
-
-
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, url_for, flash, redirect
+from flask import request, session
 from flask_bcrypt import Bcrypt
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
