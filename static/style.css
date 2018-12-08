@@ -1,0 +1,360 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+body{
+    display: flex;/*Tipo de diagramacion*/
+    flex-direction: column;
+    background-color: #171717;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.6em;
+    -webkit-font-smoothing: antialiased;
+    z-index: 0;
+    align-content: center;
+}
+
+.background{
+    width: 100%;
+    height: 876px; /*100vh*/
+    background: url(bg.jpg) no-repeat 50% 50%;
+    background-size: cover;
+    z-index: 0;
+}
+
+header{
+    /*width: 100%;
+    height: 100vh;
+    background: url(bg.jpg) no-repeat 50% 50%;
+    background-size: cover;*/
+}
+
+.wrapper{/*header*/
+    width: 100%;
+    height: 100px;
+    margin-top: 0;
+    position: fixed;
+    z-index: 5;
+}
+
+nav {
+    /*position: fixed;*/
+    width: 100%;
+    line-height: 60px;
+    /*height: 60px;*/
+}
+.content{
+    width: 94%;
+    margin: 4em auto;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: justify;
+}
+
+
+.logo img{
+    margin: 15px;
+    width:250px;
+    height: auto;
+    float: left;
+    line-height: 60px;
+    position: fixed;
+}
+
+
+
+nav ul {
+    line-height: 60px;
+    list-style: none;
+    background: rgba(0,0,0,0);
+    overflow: hidden;
+    color: #fff;
+    padding: 0;
+    text-align: right;
+    margin: 0;
+    padding-right: 40px;
+    transition: 1s;
+}
+
+nav.black ul{
+    background: #000;
+}
+
+nav ul li {
+    display: inline-block;
+    padding: 16px 16px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #a3a3a3;
+    font-size: 12px;
+    letter-spacing: 3px;
+    font-weight: 900;
+}
+
+.menu-icon {
+    line-height: 60px;
+    width: 100%;
+    background: #000;
+    text-align: right;
+    box-sizing: border-box;
+    padding: 15px 24px;
+    cursor: pointer;
+    color: #fff;
+    display: none;
+}
+
+.footer{
+    background-color: #292c2f;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    font: normal 18px sans-serif;
+    /*padding: 45px;*/
+    /*margin-top: 80px;*/
+    height: 210px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+}
+
+.footer h1{
+    color: #ffffff;
+    text-align: center;
+    font-family:  'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    font-size: 20px;
+    margin-top: 0;
+    height: 25px;
+
+}
+
+.footer li{
+    list-style: none;
+    margin: 10px 30px;
+    display: inline-block;
+    font-size: 20px;
+    padding: 20px 20px;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+    transition: .5s;
+}
+.footer li:hover{
+    color: #00cccc;
+    border: 1px solid #00cccc;
+    transition: -5s;
+}
+
+.footer p{
+    color: #ffffff;
+    text-align: center;
+    font-family:  'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    font-size: 12px;
+    margin-top: 0;
+}
+
+
+.media{
+    position: relative;
+    z-index: inherit;
+}
+.media ul{
+    padding-inline-start: 0px;
+}
+
+
+/*.copyright{
+    color: #292929;
+    font-size: 6px;
+}*/
+
+
+@media(max-width: 786px){
+    .logo {
+        position: fixed;
+        top: 0;
+        margin-top: 15px;
+    }
+    nav ul {
+        max-height: 0;
+        background: #000;
+    }
+
+    nav.black ul {
+        background: #000;
+    }
+
+    .showing {
+        max-height: 34em;
+    }
+
+    nav ul li {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .menu-icon {
+        display: block;
+    }
+}
+
+
+/* Contact us styles*/
+/*.contactus{
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    margin-top: 80px;
+    margin-bottom: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+
+.contact-c{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.contact-c h1{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    color: #ffffff;
+    font-size: 46px;
+
+}
+
+.form-c{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    text-align: center;
+    margin: 50px;
+}
+.form-c input{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    width: 100%;
+    margin: 20px 0;
+    background: rgba(0,0,0,0);
+    border: none;
+    border-bottom: 1px solid #0078ff;
+
+    color: #a3a3a3;
+}
+
+::-webkit-input-placeholder{
+    color: #EAEAEA;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+#msg{
+    margin-top: 60px;
+}
+
+.button-c{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    padding: 20px 32px;
+    font-size: 16px;
+    background: #00cccc;
+    border: none;
+    border-radius: 4px;
+    margin-top: 30px;
+    color: #ffffff;
+}*/
+
+/* Sign In and Sign Up styles*/
+/*
+.signin{
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    margin: 20px;
+    padding: 3em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: -1;
+}
+.signin h2{
+    margin-top: 0;
+    color: #ffffff;
+    font-size: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    text-align: center;
+}
+
+
+.signin form input{
+    margin: 20px 0;
+    display: block;
+    width:320px;
+    height: 50px;
+    background: rgba(0,0,0,0.3);
+    outline: none;
+    border:1px solid rgba(0,0,0,0.5);
+    font-weight: lighter;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+}
+
+.signin form button{
+    width: 332px;
+    height: 50px;
+    font-size: 16px;
+    background: #000;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    color: #ffffff;
+    border: 0;
+    border-radius: 5px;
+}*/
+
+/* Error */
+.error{
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    margin: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: -1;
+}
+
+.error form h1{
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #ffffff;
+    font-size: 50px;
+    padding: 1em;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    background: #000000;
+}
