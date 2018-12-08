@@ -1,0 +1,17 @@
+.background{
+    background: url(sources/bg4.jpg) 50% 50% no-repeat;
+}
+
+.home{
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    margin: 20px;
+    padding: 3em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 1;
+}
