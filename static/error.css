@@ -1,0 +1,30 @@
+/* Error */
+
+.background{
+    background: url(sources/bg4.jpg) 50% 50% no-repeat;
+}
+
+.error{
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    margin: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: -1;
+}
+
+.error form h1{
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #ffffff;
+    font-size: 50px;
+    padding: 1em;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    background: #000000;
+}
