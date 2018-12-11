@@ -33,40 +33,59 @@ class Role(db.Model):
 
 from forms import Formname,LoginForm
 
-
-
+@app.before_first_request
+def setup_db():
+    db.create_all()
 
 #---------------------------------------------------------------------
 
 @app.route('/')
+@app.route('/home')
 def main():
     return render_template('index.html')
 
+#---------------------------------------------------------------------
 
-if __name__ == '__main__':
-    app.run(port=8000, debug=True)
+@app.route("/signup",methods=['POST','GET'])
+def signup():
+    formpage=Formname()
+    if formpage.validate_on_submit():
+        password=bcrypt.generate_password_hash(formpage.password.data)
+        reg=Student(name=formpage.name.data,
+                    student_no= formpage.student_no.data,
+                    email= formpage.email.data,
+                    password= password,
+                    role_id=1)# role_id = Role.query.find_by(name='Student').first()
+        db.session.add(reg)
+        db.session.commit()
+        return render_template("signin.html")
+    return render_template('signup.html', formpage = formpage , title='Sign Up')
+
+@app.route("/signin",methods=['POST','GET'])
+def login():
+    formpage=LoginForm()
+    if formpage.validate_on_submit():
+        # TODO do query db for login or use login from flask
+        st=Student.query.filter_by(email=formpage.email.data).first()
+        pass_check=bcrypt.generate_password_hash(formpage.password.data).decode('utf-8')
+        if st and bcrypt.check_password_hash(st.password,formpage.password.data):
+            session['email']=formpage.email.data
+            return redirect(url_for('userHome'))
+    return render_template('signin.html', formpage = formpage, email=session.get('email',False) , title='Sign In')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return render_template('index.html')
+#---------------------------------------------------------------------
 
 @app.route('/ContactUs')
 def ContactUs():
-    return render_template('contact.html')
-
-
-@app.route('/showSignUp')
-def showSignUp():
-    return render_template('signup.html')
-
-@app.route('/showSignin')
-def showSignin():
-    return render_template('signin.html')
+    return render_template('contact.html', title='Contact Us')
 
 @app.route('/userHome')
 def userHome():
     return render_template('userHome.html')
 
-
-@app.route('/logout')
-def logout():
-    #session.pop('user', None)
-    return redirect('/')
-
-
+if __name__ == '__main__':
+    app.run(debug=True)
