@@ -11,7 +11,32 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #eliminar warning
 db=SQLAlchemy(app)
 bcrypt=Bcrypt(app)
 
+#--------------------------------------------------------
+class Student(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    student_no=db.Column(db.String(20),unique=True,nullable=True)
+    email=db.Column(db.String(20),unique=True,nullable=True)
+    name=db.Column(db.String(10),nullable=True)
+    password=db.Column(db.String(30),nullable=True)
+    role_id=db.Column(db.Integer,db.ForeignKey('role.id'),nullable=True)
 
+    def __repr__(self):
+        return "<Student %r>" % self.name
+
+class Role(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    name=db.Column(db.String(10),nullable=True)
+    students=db.relationship('Student',backref='role',lazy=True)
+
+    def __repr__(self):
+        return "<Role %r>" % self.name
+
+from forms import Formname,LoginForm
+
+
+
+
+#---------------------------------------------------------------------
 
 @app.route('/')
 def main():
