@@ -28,3 +28,9 @@ class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email(),Length(min=4,max=50)])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class ContactForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(), Email(),Length(min=4,max=50)])
+    email = StringField('Email', validators=[DataRequired(), Length(min=4, max=50)])
+    message = StringField('Message', validators=[DataRequired(), Length(min=4,max=600)])
+    submit = SubmitField('Submit')

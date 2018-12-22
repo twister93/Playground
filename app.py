@@ -31,7 +31,8 @@ class Role(db.Model):
     def __repr__(self):
         return "<Role %r>" % self.name
 
-from forms import Formname,LoginForm
+from forms import Formname, LoginForm, ContactForm
+
 
 @app.before_first_request
 def setup_db():
@@ -81,7 +82,8 @@ def logout():
 
 @app.route('/ContactUs')
 def ContactUs():
-    return render_template('contact.html', title='Contact Us')
+    formpage=ContactForm()
+    return render_template('contact.html', formpage=formpage, title='Contact Us')
 
 @app.route('/userHome')
 def userHome():
