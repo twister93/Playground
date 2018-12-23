@@ -35,13 +35,23 @@
                 </div>
                 <div class="menu">
                     <ul>
-                        <li><a class="active" href="userHome">HOME</a></li>
-                        <li><a class="active" href="#">PROFILE</a></li>
+                        <li><a class="active" href="soccer">SOCCER</a></li>
+                        <li><a class="active" href="basket">BASKET</a></li>
+                        <li><a class="active" href="tennis">TENNIS</a></li>
+                        <li><a class="active" href="profile">PROFILE</a></li>
                         <li><a class="active" href="logout">LOG OUT</a></li>
                     </ul>
                 </div>
             </nav>
         </header>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <p class="message">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         {% block content %}{% endblock %}
     {% block footer %}
     <footer class="footer">

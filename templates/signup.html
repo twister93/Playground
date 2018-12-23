@@ -10,40 +10,40 @@
             <h2>Sign Up</h2>
             {% if formpage.name.errors %}
                 {{ formpage.name(class="input-signup") }}
-                {% for eroor in formpage.name.errors %}
-                    <span class="span-signup">{{ eroor }}</span>
+                {% for error in formpage.name.errors %}
+                    <span class="span-signup">{{ error }}</span>
                 {% endfor %}
             {% else %}
                 {{ formpage.name(class="input-signup", placeholder="Enter Name") }}
             {% endif %}
-            {% if formpage.student_no.errors %}
-                {{ formpage.student_no(class="input-signup") }}
-                {% for eroor in formpage.student_no.errors %}
-                    <span class="span-signup">{{ eroor }}</span>
+            {% if formpage.phone.errors %}
+                {{ formpage.phone(class="input-signup") }}
+                {% for error in formpage.phone.errors %}
+                    <span class="span-signup">{{ error }}</span>
                 {% endfor %}
             {% else %}
-                {{ formpage.student_no(class="input-signup", placeholder="Student No") }}
+                {{ formpage.phone(class="input-signup", placeholder="Enter Phone Number") }}
             {% endif %}
             {% if formpage.email.errors %}
                 {{ formpage.email(class="input-signup") }}
-                {% for eroor in formpage.email.errors %}
-                    <span class="span-signup">{{ eroor }}</span>
+                {% for error in formpage.email.errors %}
+                    <span class="span-signup">{{ error }}</span>
                 {% endfor %}
             {% else %}
             {{ formpage.email(class="input-signup", placeholder="Enter Email") }}
             {% endif %}
             {% if formpage.password.errors %}
                 {{ formpage.password(class="input-signup") }}
-                {% for eroor in formpage.password.errors %}
-                    <span class="span-signup">{{ eroor }}</span>
+                {% for error in formpage.password.errors %}
+                    <span class="span-signup">{{ error }}</span>
                 {% endfor %}
             {% else %}
                 {{ formpage.password(class="input-signup", placeholder ="Enter Password") }}
             {% endif %}
             {% if formpage.password_con.errors %}
                 {{ formpage.password_con(class="input-signup") }}
-                {% for eroor in formpage.password_con.errors %}
-                    <span class="span-signup">{{ eroor }}</span>
+                {% for error in formpage.password_con.errors %}
+                    <br><span class="span-signup">{{ error }}</span></br>
                 {% endfor %}
             {% else %}
             {{ formpage.password_con(class="input-signup", placeholder="Confirm Password") }}

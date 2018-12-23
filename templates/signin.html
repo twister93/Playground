@@ -14,16 +14,16 @@
                 <h2>Sign In</h2>
                     {% if formpage.email.errors %}
                         {{ formpage.email(class="input-signin") }}
-                        {% for eroor in formpage.email.errors %}
-                            <p class="p-signin">{{ eroor }}</p>
+                        {% for error in formpage.email.errors %}
+                            <p class="p-signin">{{ error }}</p>
                         {% endfor %}
                     {% else %}
                         {{ formpage.email(class="input-signin", placeholder="Email")}}
                     {% endif %}
                     {% if formpage.password.errors %}
                         {{ formpage.password(class="input-signin") }}
-                        {% for eroor in formpage.password.errors %}
-                            <span class="p-signin">{{ eroor }}</span>
+                        {% for error in formpage.password.errors %}
+                            <br><span class="p-signin">{{ error }}</span></br>
                         {% endfor %}
                     {% else %}
                         {{ formpage.password(class="input-signin", placeholder="password") }}
@@ -31,15 +31,5 @@
                     {{ formpage.submit(class="btn-signin") }}
         </form>
          {% endif %}
-        <!--
-        <form>
-
-            <h2>Sign In</h2>
-            <input type="text" name="inputEmail" id="inputEmail" placeholder="Enter Username" required autofocus>
-            <input type="password" name="inputPassword" id="inputPassword" placeholder="Enter Password" required>
-            <button class="btnSignIn" id="btnSignIn" type="button">Sign In</button>
-
-        </form>
-        -->
     </div>
 {% endblock %}
