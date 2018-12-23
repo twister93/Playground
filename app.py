@@ -138,6 +138,9 @@ def logout():
     #session.clear()
     return render_template('index.html')
 #---------------------------------------------------------------------
+@app.route('/AboutUs')
+def about():
+    return render_template('about.html', title='About Us')
 
 @app.route('/ContactUs')
 def ContactUs():

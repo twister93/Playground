@@ -6,9 +6,6 @@
 {% endblock %}
 {% block content %}
     <div class="signin">
-        {% if email %} <!--Control Flow Statement-->
-            <p class="p-signin">You have been logged in with {{ email }}</p>
-        {% else %}
         <form method="POST">
             {{ formpage.hidden_tag() }}
                 <h2>Sign In</h2>
@@ -30,6 +27,5 @@
                     {% endif %}
                     {{ formpage.submit(class="btn-signin") }}
         </form>
-         {% endif %}
     </div>
 {% endblock %}

@@ -5,6 +5,27 @@
   <link rel="stylesheet" href="../static/new_game.css">
 {% endblock %}
 {% block content %}
-    <div class="home">
-    </div>
+<div class="newgame">
+    <form method="POST">
+        {{ formpage.hidden_tag() }}
+            <h2>New Soccer Game</h2>
+                {% if formpage.title .errors %}
+                    {{ formpage.title (class="input-game") }}
+                    {% for error in formpage.title .errors %}
+                        <p class="p-signin">{{ error }}</p>
+                    {% endfor %}
+                {% else %}
+                    {{ formpage.title(class="input-game", placeholder="Email")}}
+                {% endif %}
+                {% if formpage.description.errors %}
+                    {{ formpage.description(class="input-game") }}
+                    {% for error in formpage.description.errors %}
+                        <br><span class="p-signin">{{ error }}</span></br>
+                    {% endfor %}
+                {% else %}
+                    {{ formpage.description(class="input-game", placeholder="password") }}
+                {% endif %}
+                {{ formpage.submit(class="btn-game") }}
+    </form>
+</div>
 {% endblock %}
