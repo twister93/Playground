@@ -1,0 +1,29 @@
+.background{
+    background: url(sources/bg7.jpg) 50% 50% no-repeat;
+}
+
+.game{
+    background: rgba(0, 0, 0, 0.46);
+    margin-top: 60px;
+    width: 60%;
+    height: 300px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    padding: 3em;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 1;
+}
+
+.card {
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    margin-top: 20px;
+    color: #ffffff;
+
+}

@@ -4,7 +4,7 @@
 
 
 .newgame{
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(133, 133, 133, 0.66);
     border-radius: 5px;
     margin: 20px;
     padding: 3em;
@@ -17,13 +17,20 @@
     z-index: 1;
 }
 
+.newgame h2{
+    margin-top: 0;
+    color: #000000;
+    font-size: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    text-align: center;
+}
+
 
 .input-game{
-    margin: 20px 0;
-    display: block;
     width:320px;
     height: 50px;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.72);
     outline: none;
     border:1px solid rgba(0,0,0,0.5);
     font-weight: lighter;
@@ -33,6 +40,9 @@
     padding-left: 10px;
     border-radius: 5px;
     color: #ffffff;
+}
+#descript{
+    height: 100px;
 }
 
 .btn-game{

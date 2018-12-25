@@ -24,6 +24,13 @@
     {% endblock %}
 </head>
 <body>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
     <div class="background"></div>
         <header class="wrapper">
             <nav class="bar">
@@ -31,11 +38,12 @@
                     <i class="fa fa-bars fa-2x"></i>
                 </div>
                 <div class="logo">
-                   <a title="playground" href="/"><img src="../static/sources/logo.png" />
+                    <a title="playground" href="/"><img src="../static/sources/logo.png"></a>
                 </div>
                 <div class="menu">
                     <ul>
                         <li><a class="active" href="soccer">HOME</a></li>
+                        <li><a class="active" href="shops">SHOPS</a></li>
                         <li><a class="active" href="AboutUs">ABOUT</a></li>
                         <li><a class="active" href="ContactUs">CONTACT</a></li>
                         {% if current_user.is_authenticated %}
@@ -48,13 +56,6 @@
                 </div>
             </nav>
         </header>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                <p class="message">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
         {% block content %}{% endblock %}
     {% block footer %}
     <footer class="footer">

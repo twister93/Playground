@@ -26,6 +26,7 @@
                         {{ formpage.password(class="input-signin", placeholder="password") }}
                     {% endif %}
                     {{ formpage.submit(class="btn-signin") }}
+                    <br><small  class="forgot"><a href="{{ url_for('reset_request') }}">Forgot password?</a></small>
         </form>
     </div>
 {% endblock %}

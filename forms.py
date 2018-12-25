@@ -2,10 +2,10 @@ from app import User
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField,SubmitField,PasswordField,ValidationError,TextAreaField,DateTimeField
+from wtforms import StringField,SubmitField,PasswordField,ValidationError,TextAreaField,DateTimeField,SelectField
 from wtforms.validators import Length,Email,EqualTo,DataRequired,regexp
 
-
+courts = [('Parco Ruffini', 'Viale Leonardo Bistolfi, 10141 Torino TO'), ('Pozzomaina S.R.L. S.S.D.', 'Via Monte Ortigara, 78, 10141 Torino TO')]
 
 class SignUpname(FlaskForm):
     name = StringField('Name:', validators=[DataRequired(), Length(min=2, max=80)])
@@ -32,9 +32,9 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class ContactForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired(), Email(),Length(min=4,max=50)])
-    email = StringField('Email', validators=[DataRequired(), Length(min=4, max=50)])
-    message = StringField('Message', validators=[DataRequired(), Length(min=4,max=600)])
+    name = StringField('Name', validators=[DataRequired(),Length(min=4,max=50)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(min=4, max=50)])
+    message = TextAreaField('Message', validators=[DataRequired(), Length(min=4,max=600)])
     submit = SubmitField('Submit')
 
 
@@ -63,7 +63,29 @@ class UpdateAccountForm(FlaskForm):
             if phone:
                 raise ValidationError('That phone has already been used')
 
+#-----------------CREATE A GAME ------------------------------
+
 class GameForm(FlaskForm):
     title = StringField('Title',validators=[DataRequired()])
     description = TextAreaField('Description',validators=[DataRequired()])
+    #court = SelectField('Location',choices= courts)
+    #courts = SelectField('Court',coerce=int)
+    court = SelectField('court',choices = [('Parco Ruffini', 'Viale Leonardo Bistolfi, 10141 Torino TO'), ('Pozzomaina S.R.L. S.S.D.', 'Via Monte Ortigara, 78, 10141 Torino TO')])
+    slot = SelectField('slot',choices=[])
     submit = SubmitField('Play')
+
+
+#-----------------------------------------------------------
+class RequestResetForm (FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        email = User.query.filter_by(email=email.data).first()
+        if email is None:
+            raise ValidationError('There is not an account with that email. You must register first.')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password_con = PasswordField('Confirm', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')

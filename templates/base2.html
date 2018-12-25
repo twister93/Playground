@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {% if title %}
-    <title>{{ title }} Page</title>
+        <title>{{ title }} Page</title>
     {% else %}
-    <title>Playground</title>
+        <title>Playground</title>
     {% endif %}
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -24,6 +24,13 @@
     {% endblock %}
 </head>
 <body>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
     <div class="background"></div>
         <header class="wrapper">
             <nav class="bar">
@@ -31,27 +38,24 @@
                     <i class="fa fa-bars fa-2x"></i>
                 </div>
                 <div class="logo">
-                   <a title="playground" href="/"><img src="../static/sources/logo.png" />
+                    <a title="playground" href="/"><img src="../static/sources/logo.png"></a>
                 </div>
+
                 <div class="menu">
                     <ul>
+                        {% if title=='Create Soccer Game' or title== 'Update Game' %}
+                        {% else %}
                         <li><a class="active" href="soccer">SOCCER</a></li>
                         <li><a class="active" href="basket">BASKET</a></li>
                         <li><a class="active" href="tennis">TENNIS</a></li>
                         <li><a class="active" href="profile">PROFILE</a></li>
                         <li><a class="active" href="logout">LOG OUT</a></li>
+                        {% endif %}
                     </ul>
                 </div>
+
             </nav>
         </header>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                <p class="message">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
         {% block content %}{% endblock %}
     {% block footer %}
     <footer class="footer">

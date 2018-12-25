@@ -29,9 +29,9 @@
 .input-contact{
     margin: 20px 0;
     display: block;
-    width:320px;
+    width:500px;
     height: 50px;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.72);
     outline: none;
     border:1px solid rgba(0,0,0,0.5);
     font-weight: lighter;

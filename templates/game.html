@@ -1,0 +1,27 @@
+{% extends "base2.html" %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="../static/game.css">
+{% endblock %}
+{% block content %}
+<div class="game">
+    <div class="card">
+        <article class="media">
+          <div class="media-body">
+            <div class="article-metadata">
+              <small>{{ game.creator.name }}</small>
+              <small>{{ game.date_game.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <h2>{{ game.title }}</h2>
+            <p>{{ game.description }}</p>
+          </div>
+        </article>
+    </div>
+</div>
+
+
+
+
+</div>
+{% endblock %}

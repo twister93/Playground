@@ -7,25 +7,41 @@
 {% block content %}
 <div class="newgame">
     <form method="POST">
-        {{ formpage.hidden_tag() }}
+            {{ formpage.hidden_tag() }}
             <h2>New Soccer Game</h2>
-                {% if formpage.title .errors %}
-                    {{ formpage.title (class="input-game") }}
-                    {% for error in formpage.title .errors %}
-                        <p class="p-signin">{{ error }}</p>
-                    {% endfor %}
-                {% else %}
-                    {{ formpage.title(class="input-game", placeholder="Email")}}
-                {% endif %}
-                {% if formpage.description.errors %}
-                    {{ formpage.description(class="input-game") }}
-                    {% for error in formpage.description.errors %}
-                        <br><span class="p-signin">{{ error }}</span></br>
-                    {% endfor %}
-                {% else %}
-                    {{ formpage.description(class="input-game", placeholder="password") }}
-                {% endif %}
-                {{ formpage.submit(class="btn-game") }}
+            {% if formpage.title .errors %}
+                {{ formpage.title (class="input-game") }}
+                {% for error in formpage.title .errors %}
+                    <p class="p-signin">{{ error }}</p>
+                {% endfor %}
+            {% else %}
+                {{ formpage.title(class="input-game", placeholder="Game Title")}}
+            {% endif %}
+            {% if formpage.description.errors %}
+                {{ formpage.description(class="input-game") }}
+                {% for error in formpage.description.errors %}
+                    <br><span class="p-signin">{{ error }}</span></br>
+                {% endfor %}
+            {% else %}
+                {{ formpage.description(class="input-game",id="descript", placeholder="Description") }}
+            {% endif %}
+            {% if formpage.court_selection.errors %}
+                {{ formpage.court_selection() }}
+                {% for error in formpage.court_selection.errors %}
+                    <br><span class="p-signin">{{ error }}</span></br>
+                {% endfor %}
+            {% else %}
+                {{ formpage.court_selection() }}
+            {% endif %}
+            {% if formpage.court.errors %}
+                {{ formpage.court() }}
+                {% for error in formpage.court.errors %}
+                    <br><span class="p-signin">{{ error }}</span></br>
+                {% endfor %}
+            {% else %}
+                {{ formpage.court() }}
+            {% endif %}
+            {{ formpage.submit(class="btn-game") }}
     </form>
 </div>
 {% endblock %}
