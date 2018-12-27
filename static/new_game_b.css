@@ -1,5 +1,5 @@
 .background{
-    background: url(sources/bg1.jpg) 50% 50% no-repeat;
+    background: url(sources/bg11.jpg) 50% 50% no-repeat;
 }
 
 .newgame{
@@ -18,7 +18,7 @@
 
 .newgame h2{
     margin-top: 0;
-    color: #000000;
+    color: #ffffff;
     font-size: 50px;
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: lighter;
@@ -47,7 +47,7 @@
     width: 220px;
     height: 30px;
     align-content: center;
-    
+
 }
 
 

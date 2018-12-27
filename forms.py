@@ -2,7 +2,7 @@ from app import User
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField,SubmitField,PasswordField,ValidationError,TextAreaField,DateTimeField,SelectField
+from wtforms import StringField,SubmitField,PasswordField,ValidationError,TextAreaField,DateTimeField,SelectField,BooleanField
 from wtforms.validators import Length,Email,EqualTo,DataRequired,regexp
 
 courts = [('Parco Ruffini', 'Viale Leonardo Bistolfi, 10141 Torino TO'), ('Pozzomaina S.R.L. S.S.D.', 'Via Monte Ortigara, 78, 10141 Torino TO')]
@@ -63,18 +63,22 @@ class UpdateAccountForm(FlaskForm):
             if phone:
                 raise ValidationError('That phone has already been used')
 
-#-----------------CREATE A GAME ------------------------------
+#-----------------CREATE and DELETE A GAME ------------------------------
 
 class GameForm(FlaskForm):
     title = StringField('Title',validators=[DataRequired()])
     description = TextAreaField('Description',validators=[DataRequired()])
-    #court = SelectField('Location',choices= courts)
-    #courts = SelectField('Court',coerce=int)
-    court = SelectField('court',choices = [('Parco Ruffini', 'Viale Leonardo Bistolfi, 10141 Torino TO'), ('Pozzomaina S.R.L. S.S.D.', 'Via Monte Ortigara, 78, 10141 Torino TO')])
-    slot = SelectField('slot',choices=[])
+    num_players = SelectField('num_players',choices=[('')])
+    court = SelectField('court', choices=[''])
+    slot = SelectField('slot',choices=[''])
+    team = BooleanField('Check! If it is a Game for your TEAM   ')
     submit = SubmitField('Play')
 
+class JoinForm(FlaskForm):
+    submit = SubmitField('Join')
 
+class DeleteForm(FlaskForm):
+    submit = SubmitField('Delete')
 #-----------------------------------------------------------
 class RequestResetForm (FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])

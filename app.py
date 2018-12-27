@@ -3,7 +3,7 @@ import random
 from PIL import Image
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import Flask, render_template, url_for, flash, redirect, request, abort, session
+from flask import Flask, render_template, url_for, flash, redirect, request, abort, session, jsonify
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user, login_required
@@ -67,12 +67,15 @@ class User(db.Model, UserMixin):
 class Games(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), unique=True, nullable=False)
-    date_game = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     description = db.Column(db.Text, nullable=False)
+    members = db.Column(db.Text,nullable=True,)
+    vacant = db.Column(db.Integer, nullable=False)
     sport = db.Column(db.String(100), unique=False, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
-    location = db.Column(db.String(100), nullable=False,
-                         default='Parco Ruffini, Viale Leonardo Bistolfi, 10141 Torino TO')
+    location = db.Column(db.String(100), nullable=False)
+    slot = db.Column(db.String(100), nullable=True)
+    slot_id = db.Column(db.Integer, nullable=True)
+    price = db.Column(db.String(50), unique=False, nullable=False)
 
     def __repr__(self):
         return "<Game Title %r>" % self.title
@@ -81,14 +84,17 @@ class Courts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(10), nullable=True)
     location = db.Column(db.String(100), nullable=True)
+    sport = db.Column(db.String(100),nullable=True)
+
 
 class Slots(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     court_number = db.Column(db.Integer,unique=False, nullable=False)
     players_number = db.Column(db.Integer,unique=False, nullable=False)
-    slot_date_time = db.Column(db.String(50), unique=False, nullable=False)
+    slot_date_time = db.Column(db.String(100), unique=False, nullable=False)
     availability = db.Column(db.String(5), unique=False, nullable=False)
     court = db.Column(db.String(100), nullable=True)
+    price = db.Column(db.String(50), unique=False, nullable=False)
 
 
 class Role(db.Model):
@@ -99,17 +105,13 @@ class Role(db.Model):
     def __repr__(self):
         return "<Role %r>" % self.name
 
-
-from forms import SignUpname, LoginForm, ContactForm, UpdateAccountForm, GameForm, RequestResetForm, ResetPasswordForm
-
+from forms import SignUpname, LoginForm, ContactForm, UpdateAccountForm, GameForm, RequestResetForm, ResetPasswordForm, JoinForm, DeleteForm
 
 @app.before_first_request
 def setup_db():
     db.create_all()
 
-
 # ---------------------------------------------------------------------
-
 @app.route('/')
 @app.route('/home')
 def main():
@@ -183,7 +185,6 @@ Message Content:
 ''' + message
     mail.send(msg)
 
-
 @app.route('/ContactUs', methods=['POST', 'GET'])
 def ContactUs():
     formpage = ContactForm()
@@ -196,55 +197,263 @@ def ContactUs():
         return redirect(url_for('main'))
     return render_template('contact.html', formpage=formpage, title='Contact Us')
 
-
 # ------------------- SOCCER GAME ---------------------------------------------------
-
 @app.route('/soccer')
 @login_required
 def soccer():
-    games = Games.query.all()
+    games = Games.query.filter_by(sport='soccer').all()
     return render_template('soccer.html', title='Soccer', games=games)
-
 
 @app.route('/soccer/new_game', methods=['POST', 'GET'])
 @login_required
 def new_game():
     formpage = GameForm()
-    formpage.court_space.choices=[(court_selection.id,court_selection.name) for court_selection in Courts.query.filter_by(name='Parco Ruffini', free=True).all()]
-    if formpage.validate_on_submit():
-        game = Games(title=formpage.title.data, description=formpage.description.data, creator=current_user, Location=formpage.court_selection.data,
-                     sport='soccer')
-        db.session.add(game)
-        db.session.commit()
-        flash('Your post has been created!', 'success')
+    formpage.court.choices=[(court.name,court.name+' - Address: '+court.location) for court in Courts.query.filter_by(sport='soccer').all()]
+    formpage.slot.choices=[(slot.id,'Court No: '+str(slot.court_number)+' | Schedule at: '+slot.slot_date_time+ ' | Max Players: '
+                            +str(slot.players_number)+' | Price : '+slot.price)
+                           for slot in Slots.query.filter_by(court='Parco Ruffini', availability='True').all()]
+    if request.method == 'POST':
+        slot = Slots.query.filter_by(id=formpage.slot.data).first()
+        slot.availability='False'
+        if slot is None:
+            flash('You did not choose a slot to play!', 'success')
+
+        else:
+            vacant = slot.players_number - 1
+            if formpage.team.data==True:
+                vacant=0
+            game = Games(title=formpage.title.data,
+                         description=formpage.description.data,
+                         members=current_user.name+' Cel: '+current_user.phone+' ',
+                         vacant=vacant,
+                         sport='soccer',
+                         creator=current_user,
+                         location=formpage.court.data,
+                         slot='Court #: '+str(slot.court_number)+'| at '+slot.slot_date_time+'| for: '+str(slot.players_number)+' players',
+                         slot_id=slot.id,
+                         price=slot.price)
+            db.session.add(game)
+            db.session.commit()
+            flash('Your post has been created!', 'success')
         return redirect(url_for('soccer'))
     return render_template('new_soccer_game.html', title='Create Soccer Game', formpage=formpage)
 
+@app.route('/soccer/new_game/slots/<court>')
+@login_required
+def slot(court):
+    slots = Slots.query.filter_by(court=court,availability='True').all()
 
-@app.route('/soccer/<int:game_id>')
+    slotArray = []
+
+    for slot in slots:
+        slotObj = {}
+        slotObj['id'] =slot.id
+        slotObj['slot_date_time'] = 'Court #: '+str(slot.court_number)+' at '+slot.slot_date_time+ 'Players Numer: '+str(slot.players_number)
+        slotArray.append(slotObj)
+    return jsonify({'slots' : slotArray})
+
+@app.route('/soccer/<int:game_id>', methods=['POST', 'GET'])
 @login_required
 def game(game_id):
     game = Games.query.get_or_404(game_id)
-    if game.creator != current_user:
-        abort(403)
-    formpage = GameForm()
-    return render_template('game.html', title='Update Game', formpage=formpage, game=game)  # title=game.title
-
-
-# --------------------------------------------------------------------------------------------------------
-
+    flag = 1
+    formpage = None
+    if game.vacant!=0:
+        flag = 0
+        if game.creator != current_user:
+            formpage = JoinForm()
+            if formpage.validate_on_submit():
+                members = game.members +' | '+current_user.name+' Cel: '+current_user.phone
+                game.members = members
+                new_vacant = game.vacant -1
+                game.vacant = new_vacant
+                db.session.commit()
+                return redirect(url_for('soccer'))
+        elif game.creator == current_user:
+            formpage = DeleteForm()
+            if formpage.validate_on_submit():
+                slot = Slots.query.get_or_404(game.slot_id)
+                slot.availability = 'True'
+                flash('The game has been deleted!!!','success')
+                db.session.delete(game)
+                db.session.commit()
+                return redirect(url_for('soccer'))
+    return render_template('game.html', title='Update Game', formpage=formpage, flag = flag, game=game)  # title=game.title
+# ------------------- BASKET GAME ---------------------------------------------------
 @app.route('/basket')
 @login_required
 def basket():
-    return render_template('basket.html', title='Basket')
+    games = Games.query.filter_by(sport='basket').all()
+    return render_template('basket.html', title='Basket', games=games)
 
 
+@app.route('/basket/new_basket_game', methods=['POST', 'GET'])
+@login_required
+def new_game_basket():
+    formpage = GameForm()
+    formpage.court.choices=[(court.name,court.name+' - Address: '+court.location) for court in Courts.query.filter_by(sport='basket').all()]
+    formpage.slot.choices=[(slot.id,'Court No: '+str(slot.court_number)+' | Schedule at: '+slot.slot_date_time+ ' | Max Players: '
+                            +str(slot.players_number)+' | Price : '+slot.price)
+                           for slot in Slots.query.filter_by(court='Basket Court', availability='True').all()]
+    if request.method == 'POST':
+        slot = Slots.query.filter_by(id=formpage.slot.data).first()
+        slot.availability='False'
+        if slot is None:
+            flash('You did not choose a slot to play!', 'success')
+
+        else:
+            vacant = slot.players_number - 1
+            if formpage.team.data==True:
+                vacant=0
+            game = Games(title=formpage.title.data,
+                         description=formpage.description.data,
+                         members=current_user.name+' Cel: '+current_user.phone+' ',
+                         vacant=vacant,
+                         sport='basket',
+                         creator=current_user,
+                         location=formpage.court.data,
+                         slot='Court #: '+str(slot.court_number)+'| at '+slot.slot_date_time+'| for: '+str(slot.players_number)+' players',
+                         slot_id=slot.id,
+                         price=slot.price)
+            db.session.add(game)
+            db.session.commit()
+            flash('Your post has been created!', 'success')
+        return redirect(url_for('basket'))
+    return render_template('new_basket_game.html', title='Create Basket Game', formpage=formpage)
+
+
+@app.route('/basket/new_basket_game/slots/<court>')
+@login_required
+def slot_b(court):
+    slots = Slots.query.filter_by(court=court,availability='True').all()
+
+    slotArray = []
+
+    for slot in slots:
+        slotObj = {}
+        slotObj['id'] =slot.id
+        slotObj['slot_date_time'] = 'Court #: '+str(slot.court_number)+' at '+slot.slot_date_time+ 'Players Numer: '+str(slot.players_number)
+        slotArray.append(slotObj)
+    return jsonify({'slots' : slotArray})
+
+@app.route('/basket/<int:game_id>', methods=['POST', 'GET'])
+@login_required
+def game_b(game_id):
+    game = Games.query.get_or_404(game_id)
+    flag = 1
+    formpage = None
+    if game.vacant!=0:
+        flag = 0
+        if game.creator != current_user:
+            formpage = JoinForm()
+            if formpage.validate_on_submit():
+                members = game.members +' | '+current_user.name+' Cel: '+current_user.phone
+                game.members = members
+                new_vacant = game.vacant -1
+                game.vacant = new_vacant
+                db.session.commit()
+                return redirect(url_for('basket'))
+        elif game.creator == current_user:
+            formpage = DeleteForm()
+            if formpage.validate_on_submit():
+                slot = Slots.query.get_or_404(game.slot_id)
+                slot.availability = 'True'
+                flash('The game has been deleted!!!','success')
+                db.session.delete(game)
+                db.session.commit()
+                return redirect(url_for('basket'))
+    return render_template('game.html', title='Update Game', formpage=formpage, flag = flag, game=game)
+# ------------------- BASKET GAME ---------------------------------------------------
 @app.route('/tennis')
 @login_required
 def tennis():
-    return render_template('tennis.html', title='Tenis')
+    games = Games.query.filter_by(sport='tennis').all()
+    return render_template('tennis.html', title='Tennis', games=games)
+
+@app.route('/tennis/new_tennis_game', methods=['POST', 'GET'])
+@login_required
+def new_game_basket():
+    formpage = GameForm()
+    formpage.court.choices=[(court.name,court.name+' - Address: '+court.location) for court in Courts.query.filter_by(sport='tennis').all()]
+    formpage.slot.choices=[(slot.id,'Court No: '+str(slot.court_number)+' | Schedule at: '+slot.slot_date_time+ ' | Max Players: '
+                            +str(slot.players_number)+' | Price : '+slot.price)
+                           for slot in Slots.query.filter_by(court='Tennis Court', availability='True').all()]#Ojo debe ir el primero siempre
+    if request.method == 'POST':
+        slot = Slots.query.filter_by(id=formpage.slot.data).first()
+        slot.availability='False'
+        if slot is None:
+            flash('You did not choose a slot to play!', 'success')
+
+        else:
+            vacant = slot.players_number - 1
+            if formpage.team.data==True:
+                vacant=0
+            game = Games(title=formpage.title.data,
+                         description=formpage.description.data,
+                         members=current_user.name+' Cel: '+current_user.phone+' ',
+                         vacant=vacant,
+                         sport='tennis',
+                         creator=current_user,
+                         location=formpage.court.data,
+                         slot='Court #: '+str(slot.court_number)+'| at '+slot.slot_date_time+'| for: '+str(slot.players_number)+' players',
+                         slot_id=slot.id,
+                         price=slot.price)
+            db.session.add(game)
+            db.session.commit()
+            flash('Your post has been created!', 'success')
+        return redirect(url_for('tennis'))
+    return render_template('new_tennis_game.html', title='Create tennis Game', formpage=formpage)
 
 
+@app.route('/tennis/new_tennis_game/slots/<court>')
+@login_required
+def slot_t(court):
+    slots = Slots.query.filter_by(court=court,availability='True').all()
+
+    slotArray = []
+
+    for slot in slots:
+        slotObj = {}
+        slotObj['id'] =slot.id
+        slotObj['slot_date_time'] = 'Court #: '+str(slot.court_number)+' at '+slot.slot_date_time+ 'Players Numer: '+str(slot.players_number)
+        slotArray.append(slotObj)
+    return jsonify({'slots' : slotArray})
+
+@app.route('/tennis/<int:game_id>', methods=['POST', 'GET'])
+@login_required
+def game_b(game_id):
+    game = Games.query.get_or_404(game_id)
+    flag = 1
+    formpage = None
+    if game.vacant!=0:
+        flag = 0
+        if game.creator != current_user:
+            formpage = JoinForm()
+            if formpage.validate_on_submit():
+                members = game.members +' | '+current_user.name+' Cel: '+current_user.phone
+                game.members = members
+                new_vacant = game.vacant -1
+                game.vacant = new_vacant
+                db.session.commit()
+                return redirect(url_for('tennis'))
+        elif game.creator == current_user:
+            formpage = DeleteForm()
+            if formpage.validate_on_submit():
+                slot = Slots.query.get_or_404(game.slot_id)
+                slot.availability = 'True'
+                flash('The game has been deleted!!!','success')
+                db.session.delete(game)
+                db.session.commit()
+                return redirect(url_for('tennis'))
+    return render_template('game.html', title='Update Game', formpage=formpage, flag = flag, game=game)
+
+# --------------------------------------------------------------------------------------------------------
+
+
+
+
+
+# -----------------------PROFILE SECTION--------------------------------------------------
 def save_picture(form_picture):
     f_name, f_ext = os.path.splitext(form_picture.filename)
     random_name = random.randint(1, 9999999999999999)  # change to unique name
@@ -257,7 +466,6 @@ def save_picture(form_picture):
     i.thumbnail(output_size)
     i.save(picture_path)
     return picture_fn
-
 
 @app.route('/profile', methods=['POST', 'GET'])
 @login_required
@@ -280,10 +488,7 @@ def profile():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('profile.html', title='Profile', image_file=image_file, formpage=formpage)
 
-
 # ------------------ RESET PASSWORD ROUTES AND FUNCTIONS ---------------------------------
-
-
 def send_reset_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset Request', sender=app.config['MAIL_USERNAME'], recipients=[user.email])
@@ -293,7 +498,6 @@ def send_reset_email(user):
 
 If you did not make this request then simply ignore this email and no changes will be made.'''
     mail.send(msg)
-
 
 @app.route('/reset_password', methods=['POST', 'GET'])
 def reset_request():
@@ -306,7 +510,6 @@ def reset_request():
         flash('An email has been send with instructions to reset your password.', 'info')
         return redirect(url_for('login'))
     return render_template('reset_request.html', title='Reset Password', formpage=formpage)
-
 
 @app.route('/reset_password/<token>', methods=['POST', 'GET'])
 def reset_token(token):
@@ -324,7 +527,6 @@ def reset_token(token):
         flash('Your password has been updated!! you are now able to login!!', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', title='Reset Password', formpage=formpage)
-
 
 # ----------------------------------------------------------------------------------------
 

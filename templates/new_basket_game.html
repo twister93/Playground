@@ -2,13 +2,13 @@
 
 {% block head %}
   {{ super() }}
-  <link rel="stylesheet" href="../static/new_game.css">
+  <link rel="stylesheet" href="../static/new_game_b.css">
 {% endblock %}
 {% block content %}
 <div class="newgame">
     <form method="POST">
             {{ formpage.hidden_tag() }}
-            <h2>New Soccer Game</h2>
+            <h2>New Basket Game</h2>
             {% if formpage.title .errors %}
                 {{ formpage.title (class="input-game") }}
                 {% for error in formpage.title .errors %}
@@ -52,7 +52,7 @@
         court_select.onchange = function() {
             court = court_select.value;
 
-            fetch('/soccer/new_game/slots/' + court).then(function (response) {
+            fetch('/basket/new_basket_game/slots/' + court).then(function (response) {
                response.json().then(function(data) {
                    var optionHTML = '';
                    for ( var slot of data.slots) {

@@ -9,26 +9,37 @@
     <main>
                <div class="col col1">
                     <h2>Games</h2>
-                    {% for game in games %}
-                        <article class="media content-section">
-                          <div class="media-body">
-                            <div class="article-metadata">
-                              <small>{{ game.creator.name }}</small>
-                              <small>{{ game.date_game.strftime('%Y-%m-%d') }}</small>
-                            </div>
-                            <h2><a href="{{ url_for('game',game_id =game.id)}}">{{ game.title }}</a></h2>
-                            <p>{{ game.description }}</p>
-                          </div>
-                        </article>
-                    {% endfor %}
+                    <div class="games">
+                        {% for game in games %}
+                                <a href="{{ url_for('game',game_id =game.id)}}" class="link">
+                                    <article class="square">
+                                      <div class="media-body">
+                                        <h3>{{ game.title }}</h3>
+                                        <p>{{ game.description }}</p>
+                                        <small>{{ game.location }}</small>
+                                        <small>{{ game.slot }}</small><br>
+                                        <small>{{ game.price }}</small>
+                                        <small id="price">{{ game.price }}</small>
+                                        <small>Vacant:  {{ game.vacant }}</small><br>
+                                        <small>Game Creator: {{ game.creator.name }}</small>
+                                      </div>
+                                    </article>
+                                </a>
+                        {% endfor %}
+                    </div>
                     <div id="icons">
                         <a class="active" href="soccer/new_game">CREATE NEW SOCCER GAME</a>
                     </div>
                </div>
                <div class="col col2">
                     <h2>Teams</h2>
+                    <div class="games">
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque voluptas excepturi illo cum mollitia, earum libero asperiores. Fugit deserunt, dolorem vero, commodi adipisci voluptatum. At impedit repellat tempore ratione quo sequi. Dicta ex distinctio nulla cumque, quod illum, quisquam ullam voluptate! Non quas consectetur tempore doloremque. Blanditiis vel beatae laudantium molestias quibusdam id, ullam consectetur est asperiores officia dolorem, tempora unde eum. Veniam ad aliquam tempora, repellendus dolor vitae ipsa voluptatum quam qui mollitia voluptas numquam, eaque assumenda, autem, ipsum velit provident veritatis magni iste recusandae fuga. Vero ullam, qui nemo maiores repudiandae, voluptatum obcaecati consequatur illo, voluptates quod facere aut eveniet ex autem nisi, non odit corporis expedita magnam sunt eaque atque. Laborum dicta impedit, repellendus delectus placeat velit praesentium tenetur doloribus, obcaecati et ullam consequatur, a. Rem, voluptatem eius asperiores porro maxime at, illum id corporis a pariatur quasi odit labore quis, aperiam eos eligendi, temporibus expedita? Atque in, quae doloribus maiores dolorem ipsam mollitia quam magnam delectus praesentium sit quidem est facilis, porro officiis hic fugit repellat enim pariatur dignissimos. Eaque, tenetur consequatur. Voluptatum ipsum asperiores at autem nisi ipsam, aliquam possimus, nam, sunt illum repellat. Quo minus maxime enim totam et laudantium iusto odit dolor perferendis!</p>
-               </div>
+                    </div>
+                    <div id="icons">
+                        <a class="active" href="#">CREATE NEW TEAM</a>
+                    </div>
+                </div>
 
     </main>
 
