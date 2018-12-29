@@ -14,7 +14,7 @@
                             <p class="p-signin">{{ error }}</p>
                         {% endfor %}
                     {% else %}
-                        {{ formpage.password(class="input-signin", placeholder="Email")}}
+                        {{ formpage.password(class="input-signin", placeholder="Password")}}
                     {% endif %}
                     {% if formpage.password_con.errors %}
                         {{ formpage.password_con(class="input-signin") }}
@@ -22,7 +22,7 @@
                             <p class="p-signin">{{ error }}</p>
                         {% endfor %}
                     {% else %}
-                        {{ formpage.password_con(class="input-signin", placeholder="Email")}}
+                        {{ formpage.password_con(class="input-signin", placeholder="Confirm Password")}}
                     {% endif %}
                     {{ formpage.submit(class="btn-signin") }}
         </form>

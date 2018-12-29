@@ -1,10 +1,58 @@
 {% extends "base2.html" %}
-
 {% block head %}
   {{ super() }}
   <link rel="stylesheet" href="../static/tennis.css">
 {% endblock %}
 {% block content %}
-    <div class="home">
-    </div>
+<div class="home">
+    <main>
+               <div class="col col1">
+                    <h2>Games</h2>
+                    <div class="games">
+                        {% for game in games %}
+                                <a href="{{ url_for('game',game_id =game.id)}}" class="link">
+                                    <article class="square">
+                                      <div class="media-body">
+                                        <h3>{{ game.title }}</h3>
+                                        <p>{{ game.description }}</p>
+                                        <small>{{ game.location }}</small>
+                                        <small>{{ game.slot }}</small><br>
+                                        <small>{{ game.price }}</small>
+                                        <small id="price">{{ game.price }}</small>
+                                        <small>Vacant:  {{ game.vacant }}</small><br>
+                                        <small>Game Creator: {{ game.creator.name }}</small>
+                                      </div>
+                                    </article>
+                                </a>
+                        {% endfor %}
+                    </div>
+                    <div id="icons">
+                        <a class="active" href="tennis/new_tennis_game">CREATE NEW TENNIS GAME</a>
+                    </div>
+               </div>
+               <div class="col col2">
+                   <h2>Teams</h2>
+                        <div class="games">
+                            {% for team in teams %}
+                                    <a href="{{ url_for('team',team_id =team.id,sport='tennis')}}" class="link">
+                                        <article class="square">
+                                          <div class="media-body">
+                                            <h3>{{ team.name }}</h3>
+                                            <p>{{ team.description }}</p>
+                                            <small>Max Team Number: {{ team.players_number }}</small><br>
+                                            <small>Vacant:  {{ team.vacant }}</small><br>
+                                            <small>Game Creator: {{ team.begginer.name }}</small>
+                                          </div>
+                                        </article>
+                                    </a>
+                            {% endfor %}
+                        </div>
+                        <div id="icons">
+                            <a class="active" href="new_team">CREATE NEW TEAM</a>
+                        </div>
+
+                </div>
+
+    </main>
+</div>
 {% endblock %}

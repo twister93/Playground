@@ -1,0 +1,48 @@
+{% extends "base2.html" %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="../static/new_team.css">
+{% endblock %}
+{% block content %}
+<div class="newteam">
+    <form method="POST">
+            {{ formpage.hidden_tag() }}
+            <h2>New Team</h2>
+            {% if formpage.name .errors %}
+                {{ formpage.name (class="input-team") }}
+                {% for error in formpage.name .errors %}
+                    <p class="p-signin">{{ error }}</p>
+                {% endfor %}
+            {% else %}
+                {{ formpage.name(class="input-team", placeholder="Game Title")}}
+            {% endif %}
+            {% if formpage.description.errors %}
+                {{ formpage.description(class="input-team") }}
+                {% for error in formpage.description.errors %}
+                    <br><span class="p-signin">{{ error }}</span></br>
+                {% endfor %}
+            {% else %}
+                {{ formpage.description(class="input-team",id="descript", placeholder="Description") }}
+            {% endif %}
+            {% if formpage.players_number.errors %}
+                {{ formpage.players_number() }}
+                {% for error in formpage.players_number.errors %}
+                    <br><span class="p-signin">{{ error }}</span></br>
+                {% endfor %}
+            {% else %}
+                 {{ formpage.players_number(class="input-team",placeholder="Team Member Number") }}
+            {% endif %}
+            {% if formpage.sport.errors %}
+                {{ formpage.sport(class="input-team") }}
+                {% for error in formpage.sport.errors %}
+                    <br><span class="p-signin">{{ error }}</span></br>
+                {% endfor %}
+            {% else %}
+               {{ formpage.sport(class="input-team") }}
+            {% endif %}
+            </br>
+            {{ formpage.submit(class="btn-team") }}
+    </form>
+</div>
+{% endblock %}

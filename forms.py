@@ -2,7 +2,7 @@ from app import User
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField,SubmitField,PasswordField,ValidationError,TextAreaField,DateTimeField,SelectField,BooleanField
+from wtforms import StringField,SubmitField,PasswordField,ValidationError,TextAreaField,DateTimeField,SelectField,BooleanField,IntegerField
 from wtforms.validators import Length,Email,EqualTo,DataRequired,regexp
 
 courts = [('Parco Ruffini', 'Viale Leonardo Bistolfi, 10141 Torino TO'), ('Pozzomaina S.R.L. S.S.D.', 'Via Monte Ortigara, 78, 10141 Torino TO')]
@@ -63,12 +63,11 @@ class UpdateAccountForm(FlaskForm):
             if phone:
                 raise ValidationError('That phone has already been used')
 
-#-----------------CREATE and DELETE A GAME ------------------------------
+#-----------------CREATE, JOIN and DELETE A GAME ------------------------------
 
 class GameForm(FlaskForm):
     title = StringField('Title',validators=[DataRequired()])
     description = TextAreaField('Description',validators=[DataRequired()])
-    num_players = SelectField('num_players',choices=[('')])
     court = SelectField('court', choices=[''])
     slot = SelectField('slot',choices=[''])
     team = BooleanField('Check! If it is a Game for your TEAM   ')
@@ -79,6 +78,14 @@ class JoinForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     submit = SubmitField('Delete')
+# -----------------CREATE, JOIN and DELETE A TEAM------------------------------
+class TeamForm(FlaskForm):
+    name = StringField('name',validators=[DataRequired()])
+    description = TextAreaField('Description',validators=[DataRequired()])
+    players_number = IntegerField('Players number',validators=[DataRequired()])
+    sport = SelectField('name', choices=[('soccer','Soccer'),('basket','Basket'),('tennis','Tennis')])
+    submit = SubmitField('Team Up')
+
 #-----------------------------------------------------------
 class RequestResetForm (FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
