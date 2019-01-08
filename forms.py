@@ -47,7 +47,7 @@ class UpdateAccountForm(FlaskForm):
 
     def validate_name(self,name):
         if name.data != current_user.name:
-            namel = User.query.filter_by(name=name.data).first()
+            name = User.query.filter_by(name=name.data).first()
             if name:
                 raise ValidationError('This name have been registered before')
 

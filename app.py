@@ -197,7 +197,7 @@ def about():
 
 # -------------------- CONTACT US EMAIL PAGE ------------------------------------
 def send_mail(name, email, message):
-    msg = Message('Contact Us Message from' + name, sender=email, recipients=[app.config['MAIL_USERNAME']])
+    msg = Message('Contact Us Message from ' + name, sender=email, recipients=[app.config['MAIL_USERNAME']])
     msg.body = '''Message from: ''' + email + '''
 Message Content:
 
@@ -273,7 +273,7 @@ def slot(court):
         slotArray.append(slotObj)
     return jsonify({'slots' : slotArray})
 
-@app.route('/soccer/<int:game_id>', methods=['POST', 'GET'])
+@app.route('/soccer/<int:game_id>s', methods=['POST', 'GET'])
 @login_required
 def game(game_id):
     game = Games.query.get_or_404(game_id)
@@ -360,7 +360,7 @@ def slot_b(court):
         slotArray.append(slotObj)
     return jsonify({'slots' : slotArray})
 
-@app.route('/basket/<int:game_id>', methods=['POST', 'GET'])
+@app.route('/basket/<int:game_id>b', methods=['POST', 'GET'])
 @login_required
 def game_b(game_id):
     game = Games.query.get_or_404(game_id)
@@ -448,7 +448,7 @@ def slot_t(court):
         slotArray.append(slotObj)
     return jsonify({'slots' : slotArray})
 
-@app.route('/tennis/<int:game_id>', methods=['POST', 'GET'])
+@app.route('/tennis/<int:game_id>t', methods=['POST', 'GET'])
 @login_required
 def game_t(game_id):
     game = Games.query.get_or_404(game_id)
@@ -499,7 +499,7 @@ def new_team():
         return redirect(url_for(sport))
     return render_template('new_team.html', title='Create New Team', formpage=formpage)
 
-@app.route('/teams/<string:sport><int:team_id>', methods=['POST', 'GET'])
+@app.route('/teams/<int:team_id><string:sport>', methods=['POST', 'GET'])
 @login_required
 def team(team_id,sport):
     team = Teams.query.get_or_404(team_id)
