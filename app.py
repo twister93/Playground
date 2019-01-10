@@ -150,7 +150,7 @@ def signup():
                         email=formpage.email.data,
                         name=formpage.name.data,
                         password=hashed_password,
-                        role_id=1)  # role_id = Role.query.find_by(name='Student').first()
+                        role_id=1)
         db.session.add(user_reg)
         db.session.commit()
         flash('Your account has been created!! you are now able to login!!', 'success')
@@ -231,7 +231,7 @@ def new_game():
     formpage.court.choices=[(court.name,court.name+' - Address: '+court.location) for court in Courts.query.filter_by(sport='soccer').all()]
     formpage.slot.choices=[(slot.id,'Court No: '+str(slot.court_number)+' | Schedule at: '+slot.slot_date_time+ ' | Max Players: '
                             +str(slot.players_number)+' | Price : '+slot.price)
-                           for slot in Slots.query.filter_by(court='Parco Ruffini', availability='True').all()]
+                           for slot in Slots.query.filter_by(court='Circolo della Stampa - Sporting A.S.D.', availability='True').all()]
     if request.method == 'POST':
         try:
             slot = Slots.query.filter_by(id=formpage.slot.data).first()
@@ -269,7 +269,7 @@ def slot(court):
     for slot in slots:
         slotObj = {}
         slotObj['id'] =slot.id
-        slotObj['slot_date_time'] = 'Court #: '+str(slot.court_number)+' at '+slot.slot_date_time+ 'Players Numer: '+str(slot.players_number)
+        slotObj['slot_date_time'] = 'Court #: '+str(slot.court_number)+' at '+slot.slot_date_time+ ' Players Numer: '+str(slot.players_number)
         slotArray.append(slotObj)
     return jsonify({'slots' : slotArray})
 
@@ -317,7 +317,7 @@ def new_game_basket():
     formpage.court.choices=[(court.name,court.name+' - Address: '+court.location) for court in Courts.query.filter_by(sport='basket').all()]
     formpage.slot.choices=[(slot.id,'Court No: '+str(slot.court_number)+' | Schedule at: '+slot.slot_date_time+ ' | Max Players: '
                             +str(slot.players_number)+' | Price : '+slot.price)
-                           for slot in Slots.query.filter_by(court='Campo da pallacanestro', availability='True').all()]
+                           for slot in Slots.query.filter_by(court='Circolo della Stampa - Sporting A.S.D. - Basket', availability='True').all()]
     if request.method == 'POST':
         try:
             slot = Slots.query.filter_by(id=formpage.slot.data).first()
@@ -356,7 +356,7 @@ def slot_b(court):
     for slot in slots:
         slotObj = {}
         slotObj['id'] =slot.id
-        slotObj['slot_date_time'] = 'Court #: '+str(slot.court_number)+' at '+slot.slot_date_time+ 'Players Numer: '+str(slot.players_number)
+        slotObj['slot_date_time'] = 'Court #: '+str(slot.court_number)+' at '+slot.slot_date_time+ ' Players Numer: '+str(slot.players_number)
         slotArray.append(slotObj)
     return jsonify({'slots' : slotArray})
 
@@ -405,7 +405,7 @@ def new_game_tennis():
     formpage.court.choices=[(court.name,court.name+' - Address: '+court.location) for court in Courts.query.filter_by(sport='tennis').all()]
     formpage.slot.choices=[(slot.id,'Court No: '+str(slot.court_number)+' | Schedule at: '+slot.slot_date_time+ ' | Max Players: '
                             +str(slot.players_number)+' | Price : '+slot.price)
-                           for slot in Slots.query.filter_by(court='Parco Ruffini - Tennis', availability='True').all()]#Ojo debe ir el primero siempre
+                           for slot in Slots.query.filter_by(court='Circolo della Stampa - Sporting A.S.D. - Tennis', availability='True').all()]#Ojo debe ir el primero siempre
     if request.method == 'POST':
         try:
             slot = Slots.query.filter_by(id=formpage.slot.data).first()
@@ -444,7 +444,7 @@ def slot_t(court):
     for slot in slots:
         slotObj = {}
         slotObj['id'] =slot.id
-        slotObj['slot_date_time'] = 'Court #: '+str(slot.court_number)+' at '+slot.slot_date_time+ 'Players Numer: '+str(slot.players_number)
+        slotObj['slot_date_time'] = 'Court #: '+str(slot.court_number)+' at '+slot.slot_date_time+ ' Players Numer: '+str(slot.players_number)
         slotArray.append(slotObj)
     return jsonify({'slots' : slotArray})
 
