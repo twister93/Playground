@@ -42,3 +42,10 @@
     border: 0;
     border-radius: 5px;
 }
+
+.link{
+    color: white;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    font-size: 12px;
+}

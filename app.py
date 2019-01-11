@@ -9,6 +9,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user, login_required
 from flask_mail import Mail, Message
 
+from flask_googlemaps import GoogleMaps
+from flask_googlemaps import Map
+
+from flask_socketio import SocketIO
+
 # ---------------    DATABASE CONFIG SECTION ------------
 app = Flask(__name__)
 app.config[
@@ -29,6 +34,11 @@ app.config['MAIL_PASSWORD'] = 'playground(001)'
 
 mail = Mail(app)  # inicialization
 
+#--------------- GOOGLE MAPS API----------
+GoogleMaps(app, key="AIzaSyDgqIyx02QRdO5Y42dyejOTC7AejFxRJxE")
+
+#---- Socket IO initialization -----
+socketio = SocketIO(app)
 
 # --------------------------------------------------------
 @login_manager.user_loader
@@ -124,7 +134,7 @@ class Role(db.Model):
         return "<Role %r>" % self.name
 
 from forms import SignUpname, LoginForm, ContactForm, UpdateAccountForm, GameForm, RequestResetForm, ResetPasswordForm, \
-                    JoinForm, DeleteForm, TeamForm
+                    JoinForm, DeleteForm, TeamForm, LeaveForm, MessageForm
 
 @app.before_first_request
 def setup_db():
@@ -257,7 +267,57 @@ def new_game():
             db.session.commit()
             flash('Your post has been created!', 'success')
         return redirect(url_for('soccer'))
-    return render_template('new_soccer_game.html', title='Create Soccer Game', formpage=formpage)
+    #Map handler
+    soccermap = Map(
+        identifier="view-side",
+        lat=45.0728612,
+        lng=7.6474516,
+        zoom=12,
+        markers=[
+            {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+             'lat': 45.0396017,
+             'lng': 7.6452646,
+             'infobox': "Circolo della Stampa - Sporting A.S.D."
+
+            },
+            {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+             'lat': 45.0521902,
+             'lng': 7.6101512,
+             'infobox': "Poligru L'oasi dello sport"
+
+            },
+            {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+             'lat': 45.0700943,
+             'lng': 7.651680199999987,
+             'infobox': "Nuova Golden Goal"
+
+            },
+            {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png',
+             'lat': 45.0699097,
+             'lng': 7.655949400000054,
+             'infobox': "Cit Turin LDE"
+
+            },
+            {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+             'lat': 45.068541,
+             'lng': 7.62848699999995,
+             'infobox': "Pozzomaina S.R.L. S.S.D."
+
+            },
+            {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png',
+             'lat': 45.0601674,
+             'lng': 7.644224300000019,
+             'infobox': "Centro sportivo Robillant"
+            }
+        ]
+    )
+    return render_template('new_soccer_game.html', title='Create Soccer Game', formpage=formpage, soccermap=soccermap)
 
 @app.route('/soccer/new_game/slots/<court>')
 @login_required
@@ -282,14 +342,27 @@ def game(game_id):
     if game.vacant!=0:
         if game.creator != current_user:
             flag = 0
-            formpage = JoinForm()
-            if formpage.validate_on_submit():
-                members = game.members +' | '+current_user.name+' Cel: '+current_user.phone
-                game.members = members
-                new_vacant = game.vacant -1
-                game.vacant = new_vacant
-                db.session.commit()
-                return redirect(url_for('soccer'))
+            if current_user.phone in game.members:
+                formpage = LeaveForm()
+                if formpage.validate_on_submit():
+                    toreplace =' | '+current_user.name+' Cel: '+current_user.phone
+                    members = game.members.replace(toreplace,'')
+                    game.members = members
+                    new_vacant = game.vacant +1
+                    game.vacant = new_vacant
+                    db.session.commit()
+                    flash('You have leave!!!', 'success')
+                    return redirect(url_for('soccer'))
+            else:
+                formpage = JoinForm()
+                if formpage.validate_on_submit():
+                    members = game.members +' | '+current_user.name+' Cel: '+current_user.phone
+                    game.members = members
+                    new_vacant = game.vacant -1
+                    game.vacant = new_vacant
+                    db.session.commit()
+                    flash('You have join the team!!!', 'success')
+                    return redirect(url_for('soccer'))
     if game.creator == current_user:
         flag=0
         formpage = DeleteForm()
@@ -343,7 +416,36 @@ def new_game_basket():
             db.session.commit()
             flash('Your game has been created!', 'success')
         return redirect(url_for('basket'))
-    return render_template('new_basket_game.html', title='Create Basket Game', formpage=formpage)
+    #Map handler
+    basketmap = Map(
+        identifier="view-side",
+        lat=45.0728612,
+        lng=7.6474516,
+        zoom=12,
+        markers=[
+            {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+             'lat': 45.0396017,
+             'lng': 7.6452646,
+             'infobox': "Circolo della Stampa - Sporting A.S.D. - Basket"
+
+            },
+            {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+             'lat': 45.0736286,
+             'lng': 7.631213300000013,
+             'infobox': "Basket court"
+
+            },
+            {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png',
+             'lat': 45.0601674,
+             'lng': 7.644224300000019,
+             'infobox': "Centro sportivo Robillant - Basket"
+            }
+        ]
+    )
+    return render_template('new_basket_game.html', title='Create Basket Game', formpage=formpage, basketmap=basketmap)
 
 
 @app.route('/basket/new_basket_game/slots/<court>')
@@ -369,14 +471,27 @@ def game_b(game_id):
     if game.vacant!=0:
         if game.creator != current_user:
             flag = 0
-            formpage = JoinForm()
-            if formpage.validate_on_submit():
-                members = game.members +' | '+current_user.name+' Cel: '+current_user.phone
-                game.members = members
-                new_vacant = game.vacant -1
-                game.vacant = new_vacant
-                db.session.commit()
-                return redirect(url_for('basket'))
+            if current_user.phone in game.members:
+                formpage = LeaveForm()
+                if formpage.validate_on_submit():
+                    toreplace = ' | ' + current_user.name + ' Cel: ' + current_user.phone
+                    members = game.members.replace(toreplace, '')
+                    game.members = members
+                    new_vacant = game.vacant + 1
+                    game.vacant = new_vacant
+                    db.session.commit()
+                    flash('You have leave!!!', 'success')
+                    return redirect(url_for('basket'))
+            else:
+                formpage = JoinForm()
+                if formpage.validate_on_submit():
+                    members = game.members + ' | ' + current_user.name + ' Cel: ' + current_user.phone
+                    game.members = members
+                    new_vacant = game.vacant - 1
+                    game.vacant = new_vacant
+                    db.session.commit()
+                    flash('You have join the team!!!', 'success')
+                    return redirect(url_for('basket'))
     if game.creator == current_user:
         flag=0
         formpage = DeleteForm()
@@ -431,7 +546,43 @@ def new_game_tennis():
             db.session.commit()
             flash('Your post has been created!', 'success')
         return redirect(url_for('tennis'))
-    return render_template('new_tennis_game.html', title='Create Tennis Game', formpage=formpage)
+    #Map handler
+    tennismap = Map(
+        identifier="view-side",
+        lat=45.0728612,
+        lng=7.6474516,
+        zoom=12,
+        markers=[
+            {
+                'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                'lat': 45.0396017,
+                'lng': 7.6452646,
+                'infobox': "Circolo della Stampa - Sporting A.S.D."
+
+            },
+            {
+                'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                'lat': 45.0521902,
+                'lng': 7.6101512,
+                'infobox': "Poligru L'oasi dello sport"
+
+            },
+            {
+                'icon': 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+                'lat': 45.08472099999999,
+                'lng': 7.6406868999999915,
+                'infobox': "Nord Tennis Sport Club"
+
+            },
+            {
+                'icon': 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png',
+                'lat': 45.0601674,
+                'lng': 7.644224300000019,
+                'infobox': "Centro sportivo Robillant"
+            }
+        ]
+    )
+    return render_template('new_tennis_game.html', title='Create Tennis Game', formpage=formpage, tennismap=tennismap)
 
 
 @app.route('/tennis/new_tennis_game/slots/<court>')
@@ -457,14 +608,27 @@ def game_t(game_id):
     if game.vacant!=0:
         if game.creator != current_user:
             flag = 0
-            formpage = JoinForm()
-            if formpage.validate_on_submit():
-                members = game.members +' | '+current_user.name+' Cel: '+current_user.phone
-                game.members = members
-                new_vacant = game.vacant -1
-                game.vacant = new_vacant
-                db.session.commit()
-                return redirect(url_for('tennis'))
+            if current_user.phone in game.members:
+                formpage = LeaveForm()
+                if formpage.validate_on_submit():
+                    toreplace = ' | ' + current_user.name + ' Cel: ' + current_user.phone
+                    members = game.members.replace(toreplace, '')
+                    game.members = members
+                    new_vacant = game.vacant + 1
+                    game.vacant = new_vacant
+                    db.session.commit()
+                    flash('You have leave!!!', 'success')
+                    return redirect(url_for('tennis'))
+            else:
+                formpage = JoinForm()
+                if formpage.validate_on_submit():
+                    members = game.members + ' | ' + current_user.name + ' Cel: ' + current_user.phone
+                    game.members = members
+                    new_vacant = game.vacant - 1
+                    game.vacant = new_vacant
+                    db.session.commit()
+                    flash('You have join the team!!!', 'success')
+                    return redirect(url_for('tennis'))
     if game.creator == current_user:
         flag=0
         formpage = DeleteForm()
@@ -505,17 +669,31 @@ def team(team_id,sport):
     team = Teams.query.get_or_404(team_id)
     formpage = None
     flag = 1
+    link = 'http://127.0.0.1:5000/'+str(team_id)+sport+'/chat'
     if team.vacant!=0:
         if team.begginer != current_user:
             flag = 0
-            formpage = JoinForm()
-            if formpage.validate_on_submit():
-                members = team.members +' | '+current_user.name+' Cel: '+current_user.phone
-                team.members = members
-                new_vacant = team.vacant -1
-                team.vacant = new_vacant
-                db.session.commit()
-                return redirect(url_for(sport))
+            if current_user.phone in team.members:
+                formpage = LeaveForm()
+                if formpage.validate_on_submit():
+                    toreplace = ' | ' + current_user.name + ' Cel: ' + current_user.phone
+                    members = team.members.replace(toreplace, '')
+                    team.members = members
+                    new_vacant = team.vacant + 1
+                    team.vacant = new_vacant
+                    db.session.commit()
+                    flash('You have leave!!!', 'success')
+                    return redirect(url_for(sport))
+            else:
+                formpage = JoinForm()
+                if formpage.validate_on_submit():
+                    members = team.members + ' | ' + current_user.name + ' Cel: ' + current_user.phone
+                    team.members = members
+                    new_vacant = team.vacant - 1
+                    team.vacant = new_vacant
+                    db.session.commit()
+                    flash('You have join the team!!!', 'success')
+                    return redirect(url_for(sport))
     if team.begginer == current_user:
         flag=0
         formpage = DeleteForm()
@@ -524,7 +702,32 @@ def team(team_id,sport):
             db.session.delete(team)
             db.session.commit()
             return redirect(url_for(sport))
-    return render_template('team.html', title='Update Team', formpage=formpage, team=team,flag=flag)
+    return render_template('team.html', title='Update Team', formpage=formpage, team=team,flag=flag, link=link)
+
+@app.route('/<int:team_id><string:sport>/chat', methods=['POST', 'GET'])
+@login_required
+def sessions(team_id,sport):
+    team = Teams.query.get_or_404(team_id)
+    if current_user.phone in team.members:
+        username = current_user.name
+        formpage = MessageForm()
+        if request.method == 'GET':
+            formpage.username.data = current_user.name
+    else:
+        flash('Your not part of the team, you can not get into the chat!!')
+        return redirect(url_for(sport))
+    return render_template('session.html',title='Team Chat', formpage=formpage, username=username)
+
+def messageReceived(methods=['GET', 'POST']):
+    print('message was received!!!')
+
+@socketio.on('my event')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', json, callback=messageReceived)
+
+
+
 
 # -----------------------PROFILE SECTION--------------------------------------------------
 def save_picture(form_picture):

@@ -1,0 +1,64 @@
+{% extends "base2.html" %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="../static/session.css">
+{% endblock %}
+{% block content %}
+    <div class="session">
+        <h2>Team Chat</h2>
+        <div class="message_holder"></div>
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{  formpage.hidden_tag()}}
+
+          <!--<input type="text" class="input-session" placeholder="User Name"/>
+          <input type="text" class="input-session" placeholder="Messages"/>
+          <input type="submit" class="btn-session"/>-->
+            {% if formpage.username.errors %}
+                {{ formpage.username(class="username") }}
+                {% for error in formpage.username.errors %}
+                    <span class="span-session">{{ error }}</span>
+                {% endfor %}
+            {% else %}
+                {{ formpage.username(class="username", placeholder="Enter Name") }}
+            {% endif %}
+            {% if formpage.message.errors %}
+                {{ formpage.message(class="message") }}
+                {% for error in formpage.message.errors %}
+                    <span class="span-session">{{ error }}</span>
+                {% endfor %}
+            {% else %}
+                {{ formpage.message(class="message", placeholder="Enter Message") }}
+            {% endif %}
+            {{ formpage.submit(class="btn-session" ) }}
+        </form>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript">
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let user_name = $( 'input.username' ).val()
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'my event', {
+            user_name : user_name,
+            message : user_input
+          } )
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+      socket.on( 'my response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.user_name !== 'undefined' ) {
+          $( 'h3' ).remove()
+          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+        }
+      })
+    </script>
+{% endblock %}
+

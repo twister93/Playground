@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {% if title %}
-        <title>{{ title }} Page</title>
+        <title>{{ title }}</title>
     {% else %}
         <title>Playground</title>
     {% endif %}
@@ -21,6 +21,8 @@
     <!--<script src="../static/js/signUp.js"></script>--><!--si se activa deja de funcionar el menú-->
     <script src="../static/js/base.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
     {% endblock %}
 </head>
 <body>
@@ -43,7 +45,7 @@
 
                 <div class="menu">
                     <ul>
-                        {% if title=='Create Soccer Game' or title== 'Update Game' or title=='Create Basket Game'or title=='Create Tennis Game' or title=='Create New Team' or title=='Update Team'%}
+                        {% if title=='Create Soccer Game' or title== 'Update Game' or title=='Create Basket Game'or title=='Create Tennis Game' or title=='Create New Team' or title=='Update Team' or title=='Team Chat'%}
                         {% else %}
                         <li><a class="active" href="soccer">SOCCER</a></li>
                         <li><a class="active" href="basket">BASKET</a></li>

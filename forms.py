@@ -5,7 +5,6 @@ from flask_login import current_user
 from wtforms import StringField,SubmitField,PasswordField,ValidationError,TextAreaField,DateTimeField,SelectField,BooleanField,IntegerField
 from wtforms.validators import Length,Email,EqualTo,DataRequired,regexp
 
-courts = [('Parco Ruffini', 'Viale Leonardo Bistolfi, 10141 Torino TO'), ('Pozzomaina S.R.L. S.S.D.', 'Via Monte Ortigara, 78, 10141 Torino TO')]
 
 class SignUpname(FlaskForm):
     name = StringField('Name:', validators=[DataRequired(), Length(min=2, max=80)])
@@ -78,6 +77,9 @@ class JoinForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     submit = SubmitField('Delete')
+
+class LeaveForm(FlaskForm):
+    submit = SubmitField('Leave')
 # -----------------CREATE, JOIN and DELETE A TEAM------------------------------
 class TeamForm(FlaskForm):
     name = StringField('name',validators=[DataRequired()])
@@ -100,3 +102,8 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password_con = PasswordField('Confirm', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+
+class MessageForm(FlaskForm):
+    username = StringField('name',validators=[DataRequired()])
+    message = StringField('message',validators=[DataRequired()])
+    submit = SubmitField('Send Message')
