@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+    <link rel="stylesheet" href="../static/signin.css">
+{% endblock %}
+{% block content %}
+    <div class="signin">
+        <form method="POST">
+            {{ formpage.hidden_tag() }}
+                <h2>Reset Password</h2>
+                    {% if formpage.email.errors %}
+                        {{ formpage.email(class="input-signin") }}
+                        {% for error in formpage.email.errors %}
+                            <p class="p-signin">{{ error }}</p>
+                        {% endfor %}
+                    {% else %}
+                        {{ formpage.email(class="input-signin", placeholder="Email")}}
+                    {% endif %}
+                    {{ formpage.submit(class="btn-signin") }}
+        </form>
+    </div>
+{% endblock %}

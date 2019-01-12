@@ -1,0 +1,106 @@
+.background{
+    background: url(sources/bg5.jpg) 50% 50% no-repeat;
+}
+
+.home{
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    margin: 20px;
+    padding: 1em;
+    margin-top: 150px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 1;
+}
+.media{
+    color: white;
+}
+.home h2{
+    margin-top: 0;
+    color: #ffffff;
+    font-size: 25px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.profile{
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    margin: 20px;
+    padding: 3em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 1;
+}
+
+.input-profile{
+    margin: 20px 0;
+    display: block;
+    width: 513.13px;
+    height: 50px;
+    background: rgba(0,0,0,0.3);
+    outline: none;
+    border:1px solid rgba(0,0,0,0.5);
+    font-weight: lighter;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+    color: #ffffff;
+    align-content: center;
+}
+
+
+.btn-profile{
+    width: 332px;
+    height: 50px;
+    font-size: 16px;
+    background: #000;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    color: #ffffff;
+    border: 0;
+    border-radius: 5px;
+}
+
+.span-profile{
+    color: red;
+    font-weight: lighter;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+}
+
+.form-control-file{
+    color: #ffffff;
+}
+.profile-picture{
+    border-radius: 5px;
+    text-align: left;
+    align-content: center;
+    display: block;
+    background: rgba(0,0,0,0.3);
+    outline: none;
+    border:1px solid rgba(0,0,0,0.5);
+    margin: 20px 0;
+    width: 513.13px;
+    height: 50px;
+    padding-left: 10px;
+    font-weight: lighter;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+.rounded-circle {
+  border-radius: 50% !important;
+}

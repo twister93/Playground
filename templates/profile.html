@@ -1,0 +1,58 @@
+{% extends "base2.html" %}
+
+{% block head %}
+  {{ super() }}
+    <link rel="stylesheet" href="../static/profile.css">
+{% endblock %}
+{% block content %}
+    <div class="home">
+        <div class="media">
+            <div id="imagecontainer">
+                 <img class="rounded-circle" src="{{ image_file }}">
+            </div>
+            <div class="media-body">
+                <h2 class="account heading">{{ current_user.name }}</h2>
+                <p class="text-secondary">{{ current_user.email}}</p>
+                <p class="text-secondary">{{ current_user.phone }}</p>
+            </div>
+        </div>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{  formpage.hidden_tag()}}
+            <h2>Account Information</h2>
+            {% if formpage.name.errors %}
+                {{ formpage.name(class="input-profile") }}
+                {% for error in formpage.name.errors %}
+                    <span class="span-profile">{{ error }}</span>
+                {% endfor %}
+            {% else %}
+                {{ formpage.name(class="input-profile", placeholder="Enter Name") }}
+            {% endif %}
+            {% if formpage.phone.errors %}
+                {{ formpage.phone(class="input-profile") }}
+                {% for error in formpage.phone.errors %}
+                    <span class="span-profile">{{ error }}</span>
+                {% endfor %}
+            {% else %}
+                {{ formpage.phone(class="input-profile", placeholder="Enter Phone Number") }}
+            {% endif %}
+            {% if formpage.email.errors %}
+                {{ formpage.email(class="input-profile") }}
+                {% for error in formpage.email.errors %}
+                    <span class="span-profile">{{ error }}</span>
+                {% endfor %}
+            {% else %}
+                {{ formpage.email(class="input-profile", placeholder="Enter Email") }}
+            {% endif %}
+            <div class="profile-picture">
+            {{ formpage.picture.label() }}
+            {{ formpage.picture(class="form-control-file") }}
+            {%  if formpage.picture.errors %}
+                {% for error in formpage.picture.errors %}
+                    <br><span class="span-profile">{{ error }}</span></br>
+                {% endfor %}
+            {%  endif %}
+            </div>
+            {{ formpage.submit(class="btn-profile" ) }}
+        </form>
+    </div>
+{% endblock %}

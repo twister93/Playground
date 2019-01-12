@@ -1,0 +1,57 @@
+.background{
+    background: url(sources/bg13.jpg) 50% 50% no-repeat;
+}
+
+.newteam{
+    border: 1px solid rgba(133, 133, 133, 0.66);
+    border-radius: 5px;
+    margin: 20px;
+    padding: 3em;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    z-index: 1;
+}
+
+.newteam h2{
+    margin-top: 0;
+    color: #000000;
+    font-size: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    text-align: center;
+}
+
+
+.input-team{
+    width:520px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.72);
+    outline: none;
+    border:1px solid rgba(0,0,0,0.5);
+    font-weight: lighter;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+    color: #ffffff;
+}
+#descript{
+    height: 70px;
+}
+
+.btn-team{
+    width: 232px;
+    height: 50px;
+    font-size: 16px;
+    background: #000;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    color: #ffffff;
+    border: 0;
+    border-radius: 5px;
+}

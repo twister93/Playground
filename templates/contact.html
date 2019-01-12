@@ -1,33 +1,46 @@
 {% extends "base.html" %}
-
 {% block head %}
   {{ super() }}
     <link rel="stylesheet" href="../static/contact.css">
-    <style type="text/css">
-    .background{/* background: url(../static/bg2.jpg) 50% 50% no-repeat;
-
-        width: 100%;
-        height: 876px;
-        background-size: cover;
-        position: absolute;
-        z-index: 0;*/
-    }
-    /*body { margin:0; padding: 0; width: 100%; height:100vh; background: url(../static/bg2.jpg) 50% 50% no-repeat; background-size: cover; display: table;}*/
-    </style>
 {% endblock %}
-
 {% block content %}
     <div class="contactus">
-        <div class="contact-c">
-            <h1>Contact Us</h1>
-        </div>
-        <div class="form-c">
-            <form>
-                <input type="text" placeholder="Name" required autofocus/>
-                <input type="email" placeholder="E-mail" required autofocus/>
-                <input type="text" id="msg" placeholder="Message" required/>
-                <button type="button" class="button-c">Let's Talk</button>
-            </form>
-        </div>
+         <form method="POST" action="">
+          {{  formpage.hidden_tag()}}
+                <h2>Contact Us</h2>
+                {% if formpage.name.errors %}
+                    {{ formpage.name(class="input-contact") }}
+                    {% for eroor in formpage.name.errors %}
+                        <span class="span-contact">{{ eroor }}</span>
+                    {% endfor %}
+                {% else %}
+                    {{ formpage.name(class="input-contact", placeholder="Enter Name") }}
+                {% endif %}
+                {% if formpage.email.errors %}
+                    {{ formpage.email(class="input-contact") }}
+                    {% for eroor in formpage.email.errors %}
+                        <span class="span-contact">{{ eroor }}</span>
+                    {% endfor %}
+                {% else %}
+                {{ formpage.email(class="input-contact", placeholder="Enter Email") }}
+                {% endif %}
+                {% if formpage.message.errors %}
+                    {{ formpage.message(class="input-contact") }}
+                    {% for eroor in formpage.message.errors %}
+                        <span class="span-contact">{{ eroor }}</span>
+                    {% endfor %}
+                {% else %}
+                    {{ formpage.message(class="input-contact", placeholder="Enter Message", id="msg", type="text") }}
+                {% endif %}
+                {{ formpage.submit(class="btn-contact" ) }}
+            <!--<div class="form-c">
+                <form>
+                    <input class="contact-signup" type="text" placeholder="Name" required autofocus/>
+                    <input type="email" placeholder="E-mail" required autofocus/>
+                    <input type="text" id="msg" placeholder="Message" required/>
+                    <button type="button" class="button-c">Let's Talk</button>
+                </form>
+            </div>-->
+         </form>
     </div>
 {% endblock %}

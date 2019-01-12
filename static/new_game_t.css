@@ -1,0 +1,78 @@
+.background{
+    background: url(sources/bg12.jpg) 50% 50% no-repeat;
+}
+
+.newgame{
+    border: 1px solid rgba(133, 133, 133, 0.66);
+    border-radius: 5px;
+    margin: 20px;
+    padding: 3em;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    z-index: 1;
+    width: 60%;
+}
+
+.newgame h2{
+    margin-top: 0;
+    color: #000000;
+    font-size: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    text-align: center;
+}
+
+
+.input-game{
+    width:520px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.72);
+    outline: none;
+    border:1px solid rgba(0,0,0,0.5);
+    font-weight: lighter;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+    color: #ffffff;
+}
+#descript{
+    height: 70px;
+}
+#check{
+    width: 220px;
+    height: 30px;
+    align-content: center;
+
+}
+
+
+.btn-game{
+    width: 232px;
+    height: 50px;
+    font-size: 16px;
+    background: #000;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    color: #ffffff;
+    border: 0;
+    border-radius: 5px;
+}
+
+.col1{
+    width: 540px;
+    height: 400px;
+    float: left;
+    text-align: center ;
+}
+.col2{
+    width: 30%;
+    height: 400px;
+    float: left;
+    text-align: center ;
+}

@@ -1,0 +1,36 @@
+{% extends "base2.html" %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="../static/game.css">
+{% endblock %}
+{% block content %}
+<div class="game">
+    <form method="post">
+      {% if flag == 0%}
+        {{ formpage.hidden_tag() }}
+      {% endif %}
+      <div class="media-body">
+        <div class="article">
+           <h2>{{ game.title }}</h2>
+          <p>{{ game.description }}</p>
+          <small class="little-title">VACANT PLACES:    </small>
+          <br><small>{{ game.vacant }}</small>
+          <br><small class="little-title">SPORT CENTER:</small>
+          <br><small>{{ game.location }}</small>
+          <br><small>{{ game.slot }}</small>
+          <br><small class="little-title">PRICE:</small>
+          <br><small>{{ game.price }}</small>
+          <br><small class="little-title">MEMBERS:</small>
+          <br><small>{{ game.members }}</small>
+          <br><small class="little-title">CREATOR:</small>
+          <br><small>{{ game.creator.name }}</small>
+        </div>
+      {% if flag == 0 %}
+      {{ formpage.submit(class="btn-game") }}
+      {% endif %}
+
+      </div>
+    </form>
+</div>
+{% endblock %}

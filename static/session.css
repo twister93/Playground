@@ -1,0 +1,104 @@
+.background{
+    background: url(sources/bg15.jpg) 50% 50% no-repeat;
+}
+.session2{
+    background: rgba(0, 0, 0, 0.46);
+    margin-top: 60px;
+    width: 80%;
+    height: 470px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    padding: 3em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 1;
+}
+
+.session{
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    margin: 20px;
+    padding: 3em;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    align-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    z-index: 1;
+}
+.message_holder{
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.29);
+    height: 100px;
+    text-align: left;
+    overflow-y: scroll;
+}
+
+
+.session h2{
+    margin-top: 0;
+    color: #ffffff;
+    font-size: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.username{
+    margin: 20px 0;
+    display: block;
+    width:320px;
+    height: 50px;
+    background: rgba(251, 251, 251, 0.56);
+    outline: none;
+    border:1px solid rgba(0,0,0,0.5);
+    font-weight: lighter;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+    color: #ffffff;
+}
+.message{
+    margin: 20px 0;
+    display: block;
+    width:320px;
+    height: 50px;
+    background: rgba(251, 251, 251, 0.56);
+    outline: none;
+    border:1px solid rgba(0,0,0,0.5);
+    font-weight: lighter;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+    color: #ffffff;
+}
+.span-session{
+    color: red;
+    font-weight: lighter;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+}
+
+
+.btn-session{
+    width: 332px;
+    height: 50px;
+    font-size: 16px;
+    background: #000;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    color: #ffffff;
+    border: 0;
+    border-radius: 5px;
+}

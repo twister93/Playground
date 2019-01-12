@@ -171,6 +171,14 @@ nav ul li a {
     padding-inline-start: 0px;
 }
 
+.message{
+    color: white;
+    text-align: center;
+    font-family:  'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+    font-size: 12px;
+    margin-top: 0;
+}
 
 /*.copyright{
     color: #292929;

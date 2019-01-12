@@ -41,22 +41,6 @@
     color: #ffffff;
 }
 
-.signin form input bkup{
-    margin: 20px 0;
-    display: block;
-    width:320px;
-    height: 50px;
-    background: rgba(0,0,0,0.3);
-    outline: none;
-    border:1px solid rgba(0,0,0,0.5);
-    font-weight: lighter;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 14px;
-    margin-bottom: 10px;
-    padding-left: 10px;
-    border-radius: 5px;
-}
-
 .signin form button{
     width: 332px;
     height: 50px;
@@ -80,9 +64,7 @@
     border-radius: 5px;
 }
 
-.p-signin{
-    color: #ffffff;
-    font-weight: lighter;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 14px;
+.forgot a{
+    color: white;
+    background: rgba(0,0,0,0.3);
 }

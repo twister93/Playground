@@ -1,0 +1,78 @@
+{% extends "base2.html" %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="../static/new_game_t.css">
+  {{ tennismap.js }}
+{% endblock %}
+{% block content %}
+<div class="newgame">
+    <main>
+        <h2>New Tennis Game</h2>
+        <div class="col col1">
+            <form method="POST">
+                    {{ formpage.hidden_tag() }}
+
+                    {% if formpage.title .errors %}
+                        {{ formpage.title (class="input-game") }}
+                        {% for error in formpage.title .errors %}
+                            <p class="p-signin">{{ error }}</p>
+                        {% endfor %}
+                    {% else %}
+                        {{ formpage.title(class="input-game", placeholder="Game Title")}}
+                    {% endif %}
+                    {% if formpage.description.errors %}
+                        {{ formpage.description(class="input-game") }}
+                        {% for error in formpage.description.errors %}
+                            <br><span class="p-signin">{{ error }}</span></br>
+                        {% endfor %}
+                    {% else %}
+                        {{ formpage.description(class="input-game",id="descript", placeholder="Description") }}
+                    {% endif %}
+                    {% if formpage.court.errors %}
+                        {{ formpage.court() }}
+                        {% for error in formpage.court.errors %}
+                            <br><span class="p-signin">{{ error }}</span></br>
+                        {% endfor %}
+                    {% else %}
+                        {{ formpage.court(class="input-game") }}
+                    {% endif %}
+                    {% if formpage.slot.errors %}
+                        {{ formpage.slot(class="input-game") }}
+                        {% for error in formpage.slot.errors %}
+                            <br><span class="p-signin">{{ error }}</span></br>
+                        {% endfor %}
+                    {% else %}
+                        {{ formpage.slot(class="input-game") }}
+                    {% endif %}
+                    {{ formpage.team.label(class='input-game') }}{{ formpage.team(class='input-game') }}
+                    </br>
+                    {{ formpage.submit(class="btn-game") }}
+            </form>
+            <script>
+                var court_select = document.getElementById("court");
+                var slot_select = document.getElementById("slot");
+
+                court_select.onchange = function() {
+                    court = court_select.value;
+
+                    fetch('/tennis/new_tennis_game/slots/' + court).then(function (response) {
+                       response.json().then(function(data) {
+                           var optionHTML = '';
+                           for ( var slot of data.slots) {
+                                optionHTML += '<option value="' + slot.id + '">' + slot.slot_date_time + '</option>';
+                           }
+
+                           slot_select.innerHTML = optionHTML;
+                       });
+                    });
+
+                }
+            </script>
+        </div>
+        <div class="col col2">
+            {{tennismap.html}}
+        </div>
+    </main>
+</div>
+{% endblock %}

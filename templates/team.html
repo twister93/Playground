@@ -1,0 +1,33 @@
+{% extends "base2.html" %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="../static/team.css">
+{% endblock %}
+{% block content %}
+<div class="team">
+    <form method="post">
+      {% if flag == 0%}
+        {{ formpage.hidden_tag() }}
+      {% endif %}
+      <div class="media-body">
+        <div class="article">
+           <h2>{{ team.name }}</h2>
+          <p>{{ team.description }}</p>
+          <small class="little-title">VACANT PLACES:    </small>
+          <br><small>{{ team.vacant }}</small>
+          <br><small class="little-title">PLAYERS NUMBERS:</small>
+          <br><small>{{ team.players_number }}</small>
+          <br><small class="little-title">MEMBERS:</small>
+          <br><small>{{ team.members }}</small>
+          <br><small class="little-title">FOUNDER:</small>
+          <br><small>{{ team.begginer.name }}</small>
+          <br><a title="Just for members" class="link" href={{ link }}>team chat only for members</a>
+        </div>
+      {% if flag == 0 %}
+      {{ formpage.submit(class="btn-team") }}
+      {% endif %}
+      </div>
+    </form>
+</div>
+{% endblock %}

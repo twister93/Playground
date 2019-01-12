@@ -1,0 +1,26 @@
+.background{
+    background: url(sources/bg8.jpg) 50% 50% no-repeat;
+}
+
+.about {
+    background: rgba(0, 0, 0, 0.84);
+    outline: none;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 5px;
+    width: 94%;
+    margin-top: 80px;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: justify;
+    color: white;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    z-index: 1;
+}
+.about h2{
+    font-size: 50px;
+    text-align: left;
+}
