@@ -30,12 +30,12 @@ app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'playground.assistance@gmail.com'
-app.config['MAIL_PASSWORD'] = 'playground(001)'
+app.config['MAIL_PASSWORD'] = 'ni de riesgos)'
 
 mail = Mail(app)  # inicialization
 
 #--------------- GOOGLE MAPS API----------
-GoogleMaps(app, key="AIzaSyDgqIyx02QRdO5Y42dyejOTC7AejFxRJxE")
+GoogleMaps(app, key="no se puede pasar")
 
 #---- Socket IO initialization -----
 socketio = SocketIO(app)
